@@ -60,7 +60,7 @@
   RegisteredStore { store StoreName }
   RegistryListing { stores (Vec RegisteredStore) }
 
-  OrderRejectionReason [StoreUnknown StoreAlreadyRegistered LedgerFault]
+  OrderRejectionReason [StoreUnknown StoreAlreadyRegistered StoreNameInvalid LedgerFault]
   RejectionDetail { value String }
   OrderRejection { reason OrderRejectionReason detail RejectionDetail }
 

@@ -142,6 +142,7 @@ pub struct RegistryListing(Vec<RegisteredStore>);
 pub enum OrderRejectionReason {
     StoreUnknown,
     StoreAlreadyRegistered,
+    StoreNameInvalid,
     LedgerFault,
 }
 
