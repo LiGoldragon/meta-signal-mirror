@@ -4,11 +4,11 @@
 //! startup archive the daemon decodes.
 
 use meta_signal_mirror::{
-    CheckpointKeepCount, ConfigurationReceipt, ConfigureRequest, Frame, FrameBody, Input,
-    ListenAddress, MirrorDaemonConfiguration, OrderRejection, OrderRejectionReason, Output,
-    RegisteredStore, RegistrationReceipt, RegistryListing, RegistryQuery, RejectionDetail,
-    RetentionOrder, RetentionReceipt, RetentionRule, RetentionScope, RetirementReceipt, SocketMode,
-    StoreName, StoreRegistration, StoreRetirement, WirePath,
+    CheckpointKeepCount, ConfigurationReceipt, ConfigureRequest, DaemonConfiguration, Frame,
+    FrameBody, Input, ListenAddress, OrderRejection, OrderRejectionReason, Output, RegisteredStore,
+    RegistrationReceipt, RegistryListing, RegistryQuery, RejectionDetail, RetentionOrder,
+    RetentionReceipt, RetentionRule, RetentionScope, RetirementReceipt, SocketMode, StoreName,
+    StoreRegistration, StoreRetirement, WirePath,
 };
 use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use signal_frame::{
@@ -28,8 +28,8 @@ fn store(name: &str) -> StoreName {
     StoreName::new(name.to_owned())
 }
 
-fn configuration() -> MirrorDaemonConfiguration {
-    MirrorDaemonConfiguration {
+fn configuration() -> DaemonConfiguration {
+    DaemonConfiguration {
         storage_path: WirePath::new("/var/lib/mirror/mirror.sema".to_owned()),
         working_socket_path: WirePath::new("/run/mirror/working.sock".to_owned()),
         working_socket_mode: SocketMode::new(0o660),
@@ -164,6 +164,6 @@ fn daemon_configuration_survives_the_binary_startup_archive() {
         .write_binary_file(&path)
         .expect("write binary configuration");
     let decoded =
-        MirrorDaemonConfiguration::from_binary_path(&path).expect("decode binary configuration");
+        DaemonConfiguration::from_binary_path(&path).expect("decode binary configuration");
     assert_eq!(decoded, configuration);
 }

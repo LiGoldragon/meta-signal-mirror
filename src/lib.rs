@@ -40,7 +40,7 @@ impl ListenAddress {
     }
 }
 
-impl MirrorDaemonConfiguration {
+impl DaemonConfiguration {
     /// Decode the daemon's single binary startup argument.
     pub fn from_binary_path(
         path: impl AsRef<std::path::Path>,

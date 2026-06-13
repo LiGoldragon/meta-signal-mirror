@@ -36,7 +36,7 @@ pub struct ListenAddress(String);
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct MirrorDaemonConfiguration {
+pub struct DaemonConfiguration {
     pub storage_path: WirePath,
     pub working_socket_path: WirePath,
     pub working_socket_mode: SocketMode,
@@ -48,12 +48,12 @@ pub struct MirrorDaemonConfiguration {
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct ConfigureRequest(MirrorDaemonConfiguration);
+pub struct ConfigureRequest(DaemonConfiguration);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct ConfigurationReceipt(MirrorDaemonConfiguration);
+pub struct ConfigurationReceipt(DaemonConfiguration);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
@@ -164,7 +164,7 @@ pub struct OrderRejection {
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ConfigurationWrite {
     pub destination: WirePath,
-    pub configuration: MirrorDaemonConfiguration,
+    pub configuration: DaemonConfiguration,
 }
 
 #[rustfmt::skip]
@@ -268,38 +268,38 @@ impl From<String> for ListenAddress {
 
 #[rustfmt::skip]
 impl ConfigureRequest {
-    pub fn new(payload: MirrorDaemonConfiguration) -> Self {
+    pub fn new(payload: DaemonConfiguration) -> Self {
         Self(payload)
     }
-    pub fn payload(&self) -> &MirrorDaemonConfiguration {
+    pub fn payload(&self) -> &DaemonConfiguration {
         &self.0
     }
-    pub fn into_payload(self) -> MirrorDaemonConfiguration {
+    pub fn into_payload(self) -> DaemonConfiguration {
         self.0
     }
 }
 #[rustfmt::skip]
-impl From<MirrorDaemonConfiguration> for ConfigureRequest {
-    fn from(payload: MirrorDaemonConfiguration) -> Self {
+impl From<DaemonConfiguration> for ConfigureRequest {
+    fn from(payload: DaemonConfiguration) -> Self {
         Self::new(payload)
     }
 }
 
 #[rustfmt::skip]
 impl ConfigurationReceipt {
-    pub fn new(payload: MirrorDaemonConfiguration) -> Self {
+    pub fn new(payload: DaemonConfiguration) -> Self {
         Self(payload)
     }
-    pub fn payload(&self) -> &MirrorDaemonConfiguration {
+    pub fn payload(&self) -> &DaemonConfiguration {
         &self.0
     }
-    pub fn into_payload(self) -> MirrorDaemonConfiguration {
+    pub fn into_payload(self) -> DaemonConfiguration {
         self.0
     }
 }
 #[rustfmt::skip]
-impl From<MirrorDaemonConfiguration> for ConfigurationReceipt {
-    fn from(payload: MirrorDaemonConfiguration) -> Self {
+impl From<DaemonConfiguration> for ConfigurationReceipt {
+    fn from(payload: DaemonConfiguration) -> Self {
         Self::new(payload)
     }
 }
@@ -472,7 +472,7 @@ impl RetentionRule {
 
 #[rustfmt::skip]
 impl Input {
-    pub fn configure(payload: MirrorDaemonConfiguration) -> Self {
+    pub fn configure(payload: DaemonConfiguration) -> Self {
         Self::Configure(ConfigureRequest::new(payload))
     }
     pub fn register_store(payload: StoreName) -> Self {
@@ -491,7 +491,7 @@ impl Input {
 
 #[rustfmt::skip]
 impl Output {
-    pub fn configured(payload: MirrorDaemonConfiguration) -> Self {
+    pub fn configured(payload: DaemonConfiguration) -> Self {
         Self::Configured(ConfigurationReceipt::new(payload))
     }
     pub fn store_registered(payload: StoreName) -> Self {

@@ -23,7 +23,7 @@ tailnet TCP ingress — the TCP listener decodes only the ordinary
 - **Lifecycle vectors.** Configured, StoreRegistered, StoreRetired,
   RetentionSet, RegistryObserved, OrderRejected.
 
-## MirrorDaemonConfiguration
+## DaemonConfiguration
 
 The contract declares the daemon's typed configuration record: storage
 path, working Unix socket path + mode, meta Unix socket path + mode, and

@@ -31,7 +31,7 @@
   ;; argument the daemon decodes, and the payload of the meta Configure
   ;; operation. tcp_listen_address is the tailnet-bound ingress address
   ;; (Spirit rj9y); the daemon parses it as a socket address at startup.
-  MirrorDaemonConfiguration {
+  DaemonConfiguration {
     storage_path WirePath
     working_socket_path WirePath
     working_socket_mode SocketMode
@@ -40,8 +40,8 @@
     tcp_listen_address ListenAddress
   }
 
-  ConfigureRequest { configuration MirrorDaemonConfiguration }
-  ConfigurationReceipt { configuration MirrorDaemonConfiguration }
+  ConfigureRequest { configuration DaemonConfiguration }
+  ConfigurationReceipt { configuration DaemonConfiguration }
 
   StoreRegistration { store StoreName }
   RegistrationReceipt { store StoreName }
@@ -69,6 +69,6 @@
   ;; daemon itself never parses NOTA.
   ConfigurationWrite {
     destination WirePath
-    configuration MirrorDaemonConfiguration
+    configuration DaemonConfiguration
   }
 }
