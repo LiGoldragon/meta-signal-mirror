@@ -10,6 +10,8 @@
 ;; is deferred by decision (see INTENT.md). Privacy policy and criome
 ;; BLS attestation (Spirit x0ja) are likewise deferred.
 
+{}
+
 [(Configure ConfigureRequest)
  (RegisterStore StoreRegistration)
  (RetireStore StoreRetirement)
@@ -22,10 +24,10 @@
  (RegistryObserved RegistryListing)
  (OrderRejected OrderRejection)]
 {
-  StoreName { value String }
-  WirePath { value String }
-  SocketMode { value Integer }
-  ListenAddress { value String }
+  StoreName String
+  WirePath String
+  SocketMode Integer
+  ListenAddress String
 
   ;; The daemon's typed startup configuration: the single binary rkyv
   ;; argument the daemon decodes, and the payload of the meta Configure
@@ -50,7 +52,7 @@
 
   ;; Typed retention placeholder: stored as policy state, not yet
   ;; enforced (deferred by decision).
-  CheckpointKeepCount { value Integer }
+  CheckpointKeepCount Integer
   RetentionScope [(Store StoreName) AllStores]
   RetentionRule [KeepEverything (KeepLatestCheckpoints CheckpointKeepCount)]
   RetentionOrder { scope RetentionScope rule RetentionRule }
@@ -58,10 +60,10 @@
 
   RegistryQuery { }
   RegisteredStore { store StoreName }
-  RegistryListing { stores (Vec RegisteredStore) }
+  RegistryListing { stores (Vector RegisteredStore) }
 
   OrderRejectionReason [StoreUnknown StoreAlreadyRegistered StoreNameInvalid LedgerFault]
-  RejectionDetail { value String }
+  RejectionDetail String
   OrderRejection { reason OrderRejectionReason detail RejectionDetail }
 
   ;; Deploy text-edge request consumed by mirror-write-configuration:
