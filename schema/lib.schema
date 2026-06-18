@@ -34,43 +34,43 @@
   ;; operation. tcp_listen_address is the tailnet-bound ingress address
   ;; (Spirit rj9y); the daemon parses it as a socket address at startup.
   DaemonConfiguration {
-    storage_path WirePath
-    working_socket_path WirePath
-    working_socket_mode SocketMode
-    meta_socket_path WirePath
-    meta_socket_mode SocketMode
-    tcp_listen_address ListenAddress
+    storage_path.WirePath
+    working_socket_path.WirePath
+    working_socket_mode.SocketMode
+    meta_socket_path.WirePath
+    meta_socket_mode.SocketMode
+    tcp_listen_address.ListenAddress
   }
 
-  ConfigureRequest { configuration DaemonConfiguration }
-  ConfigurationReceipt { configuration DaemonConfiguration }
+  ConfigureRequest DaemonConfiguration
+  ConfigurationReceipt DaemonConfiguration
 
-  StoreRegistration { store StoreName }
-  RegistrationReceipt { store StoreName }
-  StoreRetirement { store StoreName }
-  RetirementReceipt { store StoreName }
+  StoreRegistration StoreName
+  RegistrationReceipt StoreName
+  StoreRetirement StoreName
+  RetirementReceipt StoreName
 
   ;; Typed retention placeholder: stored as policy state, not yet
   ;; enforced (deferred by decision).
   CheckpointKeepCount Integer
   RetentionScope [(Store StoreName) AllStores]
   RetentionRule [KeepEverything (KeepLatestCheckpoints CheckpointKeepCount)]
-  RetentionOrder { scope RetentionScope rule RetentionRule }
-  RetentionReceipt { scope RetentionScope rule RetentionRule }
+  RetentionOrder { scope.RetentionScope rule.RetentionRule }
+  RetentionReceipt { scope.RetentionScope rule.RetentionRule }
 
   RegistryQuery { }
-  RegisteredStore { store StoreName }
-  RegistryListing { stores (Vector RegisteredStore) }
+  RegisteredStore StoreName
+  RegistryListing (Vector RegisteredStore)
 
   OrderRejectionReason [StoreUnknown StoreAlreadyRegistered StoreNameInvalid LedgerFault]
   RejectionDetail String
-  OrderRejection { reason OrderRejectionReason detail RejectionDetail }
+  OrderRejection { reason.OrderRejectionReason detail.RejectionDetail }
 
   ;; Deploy text-edge request consumed by mirror-write-configuration:
   ;; encode the typed configuration into the binary startup file. The
   ;; daemon itself never parses NOTA.
   ConfigurationWrite {
-    destination WirePath
-    configuration DaemonConfiguration
+    destination.WirePath
+    configuration.DaemonConfiguration
   }
 }
