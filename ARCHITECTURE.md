@@ -3,7 +3,7 @@
 `meta-signal-mirror` is the meta policy wire contract of the mirror triad
 (`mirror` runtime, `signal-mirror` ordinary contract, `meta-signal-mirror`
 meta policy contract). Schema-derived: `schema/lib.schema` is the source,
-`build.rs` drives `schema_rust_next::build::ContractCrateBuild`
+`build.rs` drives `schema_rust::build::ContractCrateBuild`
 (`WireContract` target), generated module checked in at `src/schema/lib.rs`.
 It cites `primary/skills/component-triad.md` and
 `primary/skills/contract-repo.md`.

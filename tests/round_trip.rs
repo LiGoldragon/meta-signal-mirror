@@ -10,7 +10,7 @@ use meta_signal_mirror::{
     RetentionReceipt, RetentionRule, RetentionScope, RetirementReceipt, SocketMode, StoreName,
     StoreRegistration, StoreRetirement, WirePath,
 };
-use nota_next::{NotaDecode, NotaEncode, NotaSource};
+use nota::{NotaDecode, NotaEncode, NotaSource};
 use signal_frame::{
     ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply, RequestPayload, SessionEpoch,
     SubReply,
