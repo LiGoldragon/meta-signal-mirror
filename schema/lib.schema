@@ -45,7 +45,12 @@
   ConfigureRequest DaemonConfiguration
   ConfigurationReceipt DaemonConfiguration
 
-  StoreRegistration StoreName
+  ;; Per-store content-addressing policy, set at registration. Opaque
+  ;; is first so absence-of-choice is the payload-blind default (Spirit
+  ;; 0yx5); SemaVersionedLog opts a store into append-time digest
+  ;; recomputation against the carried body.
+  ContentAddressing [Opaque SemaVersionedLog]
+  StoreRegistration { store.StoreName addressing.ContentAddressing }
   RegistrationReceipt StoreName
   StoreRetirement StoreName
   RetirementReceipt StoreName

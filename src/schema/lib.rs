@@ -81,8 +81,31 @@ pub struct ConfigurationReceipt(DaemonConfiguration);
     feature = "nota-text",
     derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
 )]
+#[derive(
+    rkyv::Archive,
+    rkyv::Serialize,
+    rkyv::Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+)]
+pub enum ContentAddressing {
+    Opaque,
+    SemaVersionedLog,
+}
+
+#[rustfmt::skip]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StoreRegistration(StoreName);
+pub struct StoreRegistration {
+    pub store: StoreName,
+    pub addressing: ContentAddressing,
+}
 
 #[rustfmt::skip]
 #[cfg_attr(
@@ -380,25 +403,6 @@ impl From<DaemonConfiguration> for ConfigurationReceipt {
 }
 
 #[rustfmt::skip]
-impl StoreRegistration {
-    pub fn new(payload: StoreName) -> Self {
-        Self(payload)
-    }
-    pub fn payload(&self) -> &StoreName {
-        &self.0
-    }
-    pub fn into_payload(self) -> StoreName {
-        self.0
-    }
-}
-#[rustfmt::skip]
-impl From<StoreName> for StoreRegistration {
-    fn from(payload: StoreName) -> Self {
-        Self::new(payload)
-    }
-}
-
-#[rustfmt::skip]
 impl RegistrationReceipt {
     pub fn new(payload: StoreName) -> Self {
         Self(payload)
@@ -550,8 +554,8 @@ impl Input {
     pub fn configure(payload: DaemonConfiguration) -> Self {
         Self::Configure(ConfigureRequest::new(payload))
     }
-    pub fn register_store(payload: StoreName) -> Self {
-        Self::RegisterStore(StoreRegistration::new(payload))
+    pub fn register_store(payload: StoreRegistration) -> Self {
+        Self::RegisterStore(payload)
     }
     pub fn retire_store(payload: StoreName) -> Self {
         Self::RetireStore(StoreRetirement::new(payload))

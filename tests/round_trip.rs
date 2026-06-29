@@ -4,11 +4,11 @@
 //! startup archive the daemon decodes.
 
 use meta_signal_mirror::{
-    CheckpointKeepCount, ConfigurationReceipt, ConfigureRequest, DaemonConfiguration, Frame,
-    FrameBody, Input, ListenAddress, OrderRejection, OrderRejectionReason, Output, RegisteredStore,
-    RegistrationReceipt, RegistryListing, RegistryQuery, RejectionDetail, RetentionOrder,
-    RetentionReceipt, RetentionRule, RetentionScope, RetirementReceipt, SocketMode, StoreName,
-    StoreRegistration, StoreRetirement, WirePath,
+    CheckpointKeepCount, ConfigurationReceipt, ConfigureRequest, ContentAddressing,
+    DaemonConfiguration, Frame, FrameBody, Input, ListenAddress, OrderRejection,
+    OrderRejectionReason, Output, RegisteredStore, RegistrationReceipt, RegistryListing,
+    RegistryQuery, RejectionDetail, RetentionOrder, RetentionReceipt, RetentionRule, RetentionScope,
+    RetirementReceipt, SocketMode, StoreName, StoreRegistration, StoreRetirement, WirePath,
 };
 use nota::{NotaDecode, NotaEncode, NotaSource};
 use signal_frame::{
@@ -95,13 +95,17 @@ fn configure_request_round_trips() {
 
 #[test]
 fn store_registration_and_retirement_round_trip() {
-    for request in [
-        Input::RegisterStore(StoreRegistration::new(store("spirit"))),
-        Input::RetireStore(StoreRetirement::new(store("spirit"))),
-    ] {
+    for addressing in [ContentAddressing::Opaque, ContentAddressing::SemaVersionedLog] {
+        let request = Input::RegisterStore(StoreRegistration {
+            store: store("spirit"),
+            addressing,
+        });
         assert_request_round_trips(request.clone());
         assert_nota_round_trips(&request);
     }
+    let retire = Input::RetireStore(StoreRetirement::new(store("spirit")));
+    assert_request_round_trips(retire.clone());
+    assert_nota_round_trips(&retire);
 }
 
 #[test]
