@@ -8,6 +8,12 @@ meta policy contract). Schema-derived: `schema/lib.schema` is the source,
 It cites `primary/skills/component-triad.md` and
 `primary/skills/contract-repo.md`.
 
+## 0.5 · Direction
+
+`meta-signal-mirror` is the meta policy contract for the mirror daemon — the owner-only configuration and policy vocabulary for the payload-blind sema version-control mirror. It exists because store registration, retention policy, and daemon configuration are owner authority; working append-ingest traffic stays in `signal-mirror`. The meta surface stays Unix-owner-only and is structurally unreachable over the tailnet TCP ingress (Spirit `rj9y`).
+
+Retention policy (`RetentionOrder`) is typed and stored but not enforced in this cut — enforcement is deferred by decision. Criome BLS attestation (Spirit `x0ja`) is likewise deferred.
+
 ## The relation
 
 One relation: **owner ↔ mirror daemon**, over the owner-only Unix meta
