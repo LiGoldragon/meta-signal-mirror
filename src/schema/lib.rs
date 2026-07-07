@@ -57,7 +57,7 @@ pub struct DaemonConfiguration {
     pub working_socket_mode: SocketMode,
     pub meta_socket_path: WirePath,
     pub meta_socket_mode: SocketMode,
-    pub tcp_listen_address: ListenAddress,
+    pub listen_address: ListenAddress,
 }
 
 #[rustfmt::skip]
@@ -103,8 +103,8 @@ pub enum ContentAddressing {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StoreRegistration {
-    pub store: StoreName,
-    pub addressing: ContentAddressing,
+    pub store_name: StoreName,
+    pub content_addressing: ContentAddressing,
 }
 
 #[rustfmt::skip]
@@ -168,8 +168,8 @@ pub enum RetentionRule {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RetentionOrder {
-    pub scope: RetentionScope,
-    pub rule: RetentionRule,
+    pub retention_scope: RetentionScope,
+    pub retention_rule: RetentionRule,
 }
 
 #[rustfmt::skip]
@@ -179,8 +179,8 @@ pub struct RetentionOrder {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RetentionReceipt {
-    pub scope: RetentionScope,
-    pub rule: RetentionRule,
+    pub retention_scope: RetentionScope,
+    pub retention_rule: RetentionRule,
 }
 
 #[rustfmt::skip]
@@ -244,8 +244,8 @@ pub struct RejectionDetail(String);
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct OrderRejection {
-    pub reason: OrderRejectionReason,
-    pub detail: RejectionDetail,
+    pub order_rejection_reason: OrderRejectionReason,
+    pub rejection_detail: RejectionDetail,
 }
 
 #[rustfmt::skip]
@@ -255,8 +255,8 @@ pub struct OrderRejection {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ConfigurationWrite {
-    pub destination: WirePath,
-    pub configuration: DaemonConfiguration,
+    pub wire_path: WirePath,
+    pub daemon_configuration: DaemonConfiguration,
 }
 
 #[rustfmt::skip]

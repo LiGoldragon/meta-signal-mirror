@@ -35,7 +35,7 @@ fn configuration() -> DaemonConfiguration {
         working_socket_mode: SocketMode::new(0o660),
         meta_socket_path: WirePath::new("/run/mirror/meta.sock".to_owned()),
         meta_socket_mode: SocketMode::new(0o600),
-        tcp_listen_address: ListenAddress::new("100.64.0.7:7474".to_owned()),
+        listen_address: ListenAddress::new("100.64.0.7:7474".to_owned()),
     }
 }
 
@@ -97,8 +97,8 @@ fn configure_request_round_trips() {
 fn store_registration_and_retirement_round_trip() {
     for addressing in [ContentAddressing::Opaque, ContentAddressing::SemaVersionedLog] {
         let request = Input::RegisterStore(StoreRegistration {
-            store: store("spirit"),
-            addressing,
+            store_name: store("spirit"),
+            content_addressing: addressing,
         });
         assert_request_round_trips(request.clone());
         assert_nota_round_trips(&request);
@@ -119,8 +119,8 @@ fn retention_order_round_trips_for_every_rule_and_scope() {
             RetentionRule::KeepLatestCheckpoints(CheckpointKeepCount::new(3)),
         ] {
             let request = Input::SetRetention(RetentionOrder {
-                scope: scope.clone(),
-                rule: rule.clone(),
+                retention_scope: scope.clone(),
+                retention_rule: rule.clone(),
             });
             assert_request_round_trips(request.clone());
             assert_nota_round_trips(&request);
@@ -142,15 +142,15 @@ fn replies_round_trip_with_typed_payloads() {
         Output::StoreRegistered(RegistrationReceipt::new(store("spirit"))),
         Output::StoreRetired(RetirementReceipt::new(store("spirit"))),
         Output::RetentionSet(RetentionReceipt {
-            scope: RetentionScope::AllStores,
-            rule: RetentionRule::KeepEverything,
+            retention_scope: RetentionScope::AllStores,
+            retention_rule: RetentionRule::KeepEverything,
         }),
         Output::RegistryObserved(RegistryListing::new(vec![RegisteredStore::new(store(
             "spirit",
         ))])),
         Output::OrderRejected(OrderRejection {
-            reason: OrderRejectionReason::StoreUnknown,
-            detail: RejectionDetail::new("no such store".to_owned()),
+            order_rejection_reason: OrderRejectionReason::StoreUnknown,
+            rejection_detail: RejectionDetail::new("no such store".to_owned()),
         }),
     ];
     for reply in replies {
