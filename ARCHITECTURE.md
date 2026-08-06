@@ -1,62 +1,71 @@
 # meta-signal-mirror — Architecture
 
-`meta-signal-mirror` is the meta policy wire contract of the mirror triad
-(`mirror` runtime, `signal-mirror` ordinary contract, `meta-signal-mirror`
-meta policy contract). Schema-derived: `schema/lib.schema` is the source,
-`build.rs` drives `schema_rust::build::ContractCrateBuild`
-(`WireContract` target), generated module checked in at `src/schema/lib.rs`.
-It cites `primary/skills/component-triad.md` and
-`primary/skills/contract-repo.md`.
+`meta-signal-mirror` owns one thing: the vocabulary by which an owner
+configures a Mirror and governs its stores. It contains no daemon, actors,
+persistence, pruning machinery, or transport server.
 
-## 0.5 · Direction
+## Semantic center
 
-`meta-signal-mirror` is the meta policy contract for the mirror daemon — the owner-only configuration and policy vocabulary for the payload-blind sema version-control mirror. It exists because store registration, retention policy, and daemon configuration are owner authority; working append-ingest traffic stays in `signal-mirror`. The meta surface stays Unix-owner-only and is structurally unreachable over the tailnet TCP ingress (Spirit `rj9y`).
+This Interface makes owner authority legible without copying the ordinary
+Mirror vocabulary. `StoreName` comes from `signal-mirror`; `SocketPath` and
+`NetworkEndpoint` come from `signal-standard`. The relations therefore share
+identities, not spellings that merely happen to agree.
 
-Retention policy (`RetentionOrder`) is typed and stored but not enforced in this cut — enforcement is deferred by decision. Criome BLS attestation (Spirit `x0ja`) is likewise deferred.
+`MetaMirrorRequest` and `MetaMirrorReply` remain role-free. Signal request and
+reply seating is current-stage Rust behavior, not schema truth. The same Ethos
+source must remain meaningful to compilers, agents, harnesses, and visual
+interfaces without assuming Rust, LLVM, Signal framing, or this operating
+system as its permanent reader.
 
 ## The relation
 
-One relation: **owner ↔ mirror daemon**, over the owner-only Unix meta
-socket (mode `0o600`). The meta surface is structurally unreachable over the
-tailnet TCP ingress — the TCP listener decodes only the ordinary
-`signal-mirror` contract.
+One relation is represented: owner authority over a Mirror daemon.
 
-- **Endpoints.** The owner (deploy tooling, the meta CLI) sends; the mirror
-  daemon replies.
-- **Authority.** Owner-only: store registration/retirement, retention
-  policy, configuration. Kernel-vouched Unix peer credentials plus the
-  socket mode are the boundary; no payload claim is trusted.
-- **Lifecycle vectors.** Configured, StoreRegistered, StoreRetired,
-  RetentionSet, RegistryObserved, OrderRejected.
+- Requests configure the daemon, register or retire a store, set retention
+  policy, or observe the registry.
+- Replies acknowledge the transition, report the registry, or reject an
+  order with a typed reason.
+- The current daemon exposes this relation through an owner-only local
+  endpoint. That access boundary belongs to deployment and runtime policy;
+  it is not encoded as an eternal property of the Interface.
 
-## DaemonConfiguration
+The ordinary append, object-notice, checkpoint, restore, and head relations
+belong exclusively to `signal-mirror`.
 
-The contract declares the daemon's typed configuration record: storage
-path, working Unix socket path + mode, meta Unix socket path + mode, and
-the tailnet TCP binding address. The daemon's single startup argument is a
-binary rkyv archive of this record (one-argument rule; the daemon never
-parses NOTA). `ConfigurationWrite` is the deploy text-edge request the
-`mirror-write-configuration` helper consumes to produce that binary file.
-The same record rides the meta `Configure` operation.
+## Configuration shape
 
-## Retention — typed placeholder
+`DaemonConfiguration` composes four semantic values:
 
-`RetentionOrder` (scope + rule) is named, wire-typed, and stored by the
-daemon, but NOT enforced in this cut — enforcement is deferred by decision
-(see `INTENT.md`). The vocabulary exists so policy can be installed and
-observed before the pruning machinery lands.
+- `StoragePath`
+- `WorkingSocketBinding`
+- `MetaSocketBinding`
+- the shared `NetworkEndpoint`
 
-## Code map
+Both local bindings wrap the same `LocalSocketBinding` of shared `SocketPath`
+and local `SocketMode`. The distinct wrappers preserve why each binding exists
+while sharing its structure. The binary archive helpers are an adapter for the
+current daemon startup path; they are behavior over the Interface, not the
+authority from which its shape is derived.
 
-| Path | What |
+## Retention
+
+`RetentionOrder` is declared, carried, stored, and acknowledged. No pruning
+behavior exists in this crate, and the current Mirror runtime does not enforce
+the order. That boundary is deliberate: vocabulary can exist before the
+mechanism that acts on it.
+
+## Authority and projection
+
+| Path | Responsibility |
 |---|---|
-| `schema/lib.schema` | the authored contract source |
-| `build.rs` | `ContractCrateBuild` — regenerate with `META_SIGNAL_MIRROR_UPDATE_SCHEMA_ARTIFACTS=1 cargo build` |
-| `src/schema/lib.rs` | generated wire types + signal-frame codec (never hand-edited) |
-| `src/lib.rs` | re-exports + binary configuration archive helpers |
-| `tests/round_trip.rs` | rkyv frame + NOTA text round-trips per operation |
+| `ethos/interface.ethos` | sole authored Interface authority |
+| `src/bootstrap_manifest.rs` | already-minted authority and declaration seats |
+| `build.rs` | verifies producer sources and projects the approved transaction |
+| `src/schema/lib/generated.rs` | checked encoded Rust projection |
+| `src/schema/lib/behavior.rs` | structural, Dotos, archive, and Signal behavior |
+| `examples/canonical.dotos` | exact readable witnesses for every root variant |
 
-## Not owned
-
-No runtime, no actors, no tokio, no enforcement logic. The daemon owns the
-registry's durable state and the (deferred) retention enforcement.
+The build accepts the exact Cargo-published Ethos sources from `signal-mirror`
+and `signal-standard`, verifies them against the Rust constants compiled from
+those same revisions, then publishes this repository's `ethos/` directory for
+its consumers.

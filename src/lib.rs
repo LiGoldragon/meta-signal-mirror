@@ -1,46 +1,48 @@
-//! Schema-derived meta policy contract for the sema version-control
-//! mirror.
+//! Owner Mirror configuration and store-policy Interface.
 //!
-//! The wire vocabulary is generated from `schema/lib.schema`; this file
-//! re-exports the generated nouns and attaches the binary configuration
-//! archive surface the daemon's startup path decodes.
+//! `ethos/interface.ethos` is the sole schema authority. Its checked Rust
+//! projection exposes encoded identities; this crate adds structural Signal
+//! behavior and the binary configuration archive adapter.
 
-#[rustfmt::skip]
+pub mod bootstrap_manifest;
 pub mod schema;
-
-use thiserror::Error;
 
 pub use schema::lib::*;
 
-impl StoreName {
-    pub fn as_str(&self) -> &str {
-        self.payload().as_str()
-    }
-}
+pub const META_MIRROR_INTERFACE_SOURCE: &str = include_str!("../ethos/interface.ethos");
+pub const META_MIRROR_INTERFACE_RUST: &str = include_str!("schema/lib/generated.rs");
 
-impl WirePath {
+impl z2VPES {
     pub fn as_str(&self) -> &str {
         self.payload().as_str()
     }
 
     pub fn as_path(&self) -> &std::path::Path {
-        std::path::Path::new(self.payload().as_str())
+        std::path::Path::new(self.as_str())
     }
 }
 
-impl SocketMode {
-    pub fn into_u32(self) -> u32 {
-        self.into_payload() as u32
-    }
-}
-
-impl ListenAddress {
+impl z2VYru {
     pub fn as_str(&self) -> &str {
         self.payload().as_str()
     }
+
+    pub fn as_path(&self) -> &std::path::Path {
+        std::path::Path::new(self.as_str())
+    }
 }
 
-impl DaemonConfiguration {
+impl z2VQot {
+    pub fn into_u32(self) -> Result<u32, SocketModeRangeError> {
+        u32::try_from(self.into_payload()).map_err(|_| SocketModeRangeError)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
+#[error("socket mode does not fit the current substrate's 32-bit representation")]
+pub struct SocketModeRangeError;
+
+impl z2VXab {
     /// Decode the daemon's single binary startup argument.
     pub fn from_binary_path(
         path: impl AsRef<std::path::Path>,
@@ -60,7 +62,7 @@ impl DaemonConfiguration {
             .map_err(|_| ConfigurationArchiveError::Encode)
     }
 
-    /// Write the binary startup file a deploy tool hands the daemon.
+    /// Write the binary startup file consumed by the current daemon adapter.
     pub fn write_binary_file(
         &self,
         path: impl AsRef<std::path::Path>,
@@ -69,7 +71,7 @@ impl DaemonConfiguration {
     }
 }
 
-#[derive(Debug, Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum ConfigurationArchiveError {
     #[error("failed to read binary mirror configuration: {0}")]
     Read(std::io::Error),

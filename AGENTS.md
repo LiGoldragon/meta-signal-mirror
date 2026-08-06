@@ -1,18 +1,12 @@
 # meta-signal-mirror agent notes
 
-Read this repo's `INTENT.md` and `ARCHITECTURE.md` before editing.
+Read `ARCHITECTURE.md` and `skills.md` before editing.
 
-`meta-signal-mirror` is the meta policy wire contract of the mirror triad:
-owner-only configuration, store registration/retirement, and the typed
-retention placeholder for the sema version-control mirror daemon.
-
-Load-bearing rules for this repo:
-
-- Wire-only: no runtime, no actors, no tokio, no enforcement logic.
-- Edit `schema/lib.schema` and regenerate
-  (`META_SIGNAL_MIRROR_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`); never
-  hand-edit `src/schema/lib.rs`.
-- Retention is a typed placeholder: named and stored, not enforced —
-  enforcement is deferred by decision (`INTENT.md`). Do not present the
-  placeholder as enforced policy.
-- The meta surface is Unix-owner-only; never add a TCP-reachable meta verb.
+- `ethos/interface.ethos` is the sole schema authority.
+- The source is role-free; Signal seating belongs to current-stage behavior.
+- Import shared identities from the exact `signal-mirror` and
+  `signal-standard` producers. Do not recreate them locally.
+- No runtime, actors, persistence, transport server, or retention enforcement
+  belongs here.
+- Use only Dotos for the optional readable projection.
+- Work under exact-path claims and release them immediately after publication.

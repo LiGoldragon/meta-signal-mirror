@@ -1,0 +1,8 @@
+Interface.{1 0 0}
+[signal_mirror:lib.[StoreName] signal_standard:lib.[SocketPath NetworkEndpoint]]
+{
+  []
+  []
+  []
+  [ConfigureRequest.DaemonConfiguration StoreRetirement.StoreName LocalSocketBinding.{SocketPath SocketMode} RetentionScope.[AllStores Store.StoreName] RegistryQuery.{} StoragePath.String MetaMirrorRequest.[RetireStore.StoreRetirement RegisterStore.StoreRegistration Configure.ConfigureRequest ObserveRegistry.RegistryQuery SetRetention.RetentionOrder] RegistrationReceipt.StoreName RegisteredStore.StoreName SocketMode.Integer MetaSocketBinding.LocalSocketBinding RegistryListing.Vector<RegisteredStore> WorkingSocketBinding.LocalSocketBinding OrderRejectionReason.[StoreUnknown LedgerFault StoreAlreadyRegistered StoreNameInvalid] RetentionRule.[KeepLatestCheckpoints.CheckpointKeepCount KeepEverything] RetentionOrder.{RetentionScope RetentionRule} RetirementReceipt.StoreName MetaMirrorReply.[StoreRegistered.RegistrationReceipt RegistryObserved.RegistryListing RetentionSet.RetentionReceipt OrderRejected.OrderRejection StoreRetired.RetirementReceipt Configured.ConfigurationReceipt] ConfigurationReceipt.DaemonConfiguration DaemonConfiguration.{StoragePath WorkingSocketBinding MetaSocketBinding NetworkEndpoint} CheckpointKeepCount.Integer OrderRejection.{OrderRejectionReason RejectionDetail} ConfigurationWrite.{ConfigurationArchivePath DaemonConfiguration} RejectionDetail.String StoreRegistration.{StoreName ContentAddressing} ContentAddressing.[Opaque SemaVersionedLog] RetentionReceipt.{RetentionScope RetentionRule} ConfigurationArchivePath.String]
+}

@@ -1,5 +1,5 @@
 # meta-signal-mirror
 
-Meta policy wire contract for the sema version-control mirror: owner-only
-configuration, store registration/retirement, and the typed retention
-placeholder. Schema-derived; see `ARCHITECTURE.md`.
+The role-free owner Mirror Interface: daemon configuration, store lifecycle,
+registry observation, and retention policy. `ethos/interface.ethos` is its sole
+schema authority. See `ARCHITECTURE.md` for the relation and type topology.
