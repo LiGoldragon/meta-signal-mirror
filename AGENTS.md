@@ -10,3 +10,9 @@ Read `ARCHITECTURE.md` and `skills.md` before editing.
   belongs here.
 - Use only Dotos for the optional readable projection.
 - Work under exact-path claims and release them immediately after publication.
+
+## Protos estate status
+
+Stack: correct-new destination
+Status: active component contract, current checkout legacy-wired
+This checkout is not proof of correct-new adoption.
