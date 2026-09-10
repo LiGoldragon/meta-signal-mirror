@@ -287,7 +287,7 @@ checksum = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f"
 [[package]]
 name = "signal-mirror"
 version = "1.0.0"
-source = "git+https://github.com/LiGoldragon/signal-mirror.git?rev=2198d0b5c142dd37e68ab3fe7335a2cb28da1a6b#2198d0b5c142dd37e68ab3fe7335a2cb28da1a6b"
+source = "git+https://github.com/LiGoldragon/signal-mirror.git?rev=e6c565caac516dae3fc679ea5e110828580f3d57#e6c565caac516dae3fc679ea5e110828580f3d57"
 dependencies = [
  "datom-codec",
  "ethos-zero",
