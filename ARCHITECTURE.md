@@ -58,12 +58,12 @@ mechanism that acts on it.
 
 | Path | Responsibility |
 |---|---|
-| `ethos/interface.ethos` | sole authored Interface authority |
+| `ethos/signal.ethos` | sole authored Interface authority |
 | `src/bootstrap_manifest.rs` | already-minted authority and declaration seats |
-| `build.rs` | verifies producer sources and projects the approved transaction |
-| `src/schema/lib/generated.rs` | checked encoded Rust projection |
-| `src/schema/lib/behavior.rs` | structural, Dotos, archive, and Signal behavior |
-| `examples/canonical.dotos` | exact readable witnesses for every root variant |
+| `build.rs` | verifies the checked-in Rust projection against the authored Ethos |
+| `src/generated/signal.rs` | checked encoded Rust projection |
+| `src/lib.rs` | Signal archive and byte-carrier behavior |
+| `examples/canonical.datom` | exact readable witnesses for every root variant, in current Datom text |
 
 The build accepts the exact Cargo-published Ethos sources from `signal-mirror`
 and `signal-standard`, verifies them against the Rust constants compiled from
