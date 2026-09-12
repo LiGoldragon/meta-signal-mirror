@@ -5,30 +5,21 @@ pub type ConfigureRequest = DaemonConfiguration;
 pub type StoreRetirement = signal_mirror::StoreName;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct LocalSocketBinding {
-    pub socket_path: signal_standard::SocketPath,
+    pub socket_path: signal::SocketPath,
     pub socket_mode: SocketMode,
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum RetentionScope {
     AllStores,
     Store(signal_mirror::StoreName),
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct RegistryQuery {}
 #[rustfmt::skip]
 pub type StoragePath = String;
@@ -44,10 +35,7 @@ pub type SocketMode = i64;
 pub type MetaSocketBinding = LocalSocketBinding;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct RegistryListing {
     pub registered_store_vector: std::vec::Vec<RegisteredStore>,
 }
@@ -55,10 +43,7 @@ pub struct RegistryListing {
 pub type WorkingSocketBinding = LocalSocketBinding;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum OrderRejectionReason {
     StoreUnknown,
     LedgerFault,
@@ -67,20 +52,14 @@ pub enum OrderRejectionReason {
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum RetentionRule {
     KeepLatestCheckpoints(CheckpointKeepCount),
     KeepEverything,
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct RetentionOrder {
     pub retention_scope: RetentionScope,
     pub retention_rule: RetentionRule,
@@ -89,34 +68,25 @@ pub struct RetentionOrder {
 pub type ConfigurationReceipt = DaemonConfiguration;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct DaemonConfiguration {
     pub storage_path: StoragePath,
     pub working_socket_binding: WorkingSocketBinding,
     pub meta_socket_binding: MetaSocketBinding,
-    pub network_endpoint: signal_standard::NetworkEndpoint,
+    pub network_endpoint: signal::NetworkEndpoint,
 }
 #[rustfmt::skip]
 pub type CheckpointKeepCount = i64;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct OrderRejection {
     pub order_rejection_reason: OrderRejectionReason,
     pub rejection_detail: RejectionDetail,
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct ConfigurationWrite {
     pub configuration_archive_path: ConfigurationArchivePath,
     pub daemon_configuration: DaemonConfiguration,
@@ -125,30 +95,21 @@ pub struct ConfigurationWrite {
 pub type RejectionDetail = String;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct StoreRegistration {
     pub store_name: signal_mirror::StoreName,
     pub content_addressing: ContentAddressing,
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum ContentAddressing {
     Opaque,
     SemaVersionedLog,
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub struct RetentionReceipt {
     pub retention_scope: RetentionScope,
     pub retention_rule: RetentionRule,
@@ -157,10 +118,7 @@ pub struct RetentionReceipt {
 pub type ConfigurationArchivePath = String;
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum Query {
     RetireStore(StoreRetirement),
     RegisterStore(StoreRegistration),
@@ -170,10 +128,7 @@ pub enum Query {
 }
 #[rustfmt::skip]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
-#[cfg_attr(
-    feature = "datom",
-    derive(datom_codec::Datomizable, datom_codec::Compositional)
-)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
 pub enum Response {
     StoreRegistered(RegistrationReceipt),
     RegistryObserved(RegistryListing),

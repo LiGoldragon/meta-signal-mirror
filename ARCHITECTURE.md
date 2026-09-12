@@ -8,7 +8,7 @@ persistence, pruning machinery, or transport server.
 
 This Interface makes owner authority legible without copying the ordinary
 Mirror vocabulary. `StoreName` comes from `signal-mirror`; `SocketPath` and
-`NetworkEndpoint` come from `signal-standard`. The relations therefore share
+`NetworkEndpoint` come from `signal`. The relations therefore share
 identities, not spellings that merely happen to agree.
 
 `MetaMirrorRequest` and `MetaMirrorReply` remain role-free. Signal request and

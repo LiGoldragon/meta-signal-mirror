@@ -1,5 +1,5 @@
 Signal
-[ signal_mirror:[ StoreName ] signal_standard:[ SocketPath NetworkEndpoint ] ]
+[ signal_mirror:[ StoreName ] signal:[ SocketPath NetworkEndpoint ] ]
 [ RetireStore.StoreRetirement RegisterStore.StoreRegistration Configure.ConfigureRequest ObserveRegistry.RegistryQuery SetRetention.RetentionOrder ]
 [ StoreRegistered.RegistrationReceipt RegistryObserved.RegistryListing RetentionSet.RetentionReceipt OrderRejected.OrderRejection StoreRetired.RetirementReceipt Configured.ConfigurationReceipt ]
 [

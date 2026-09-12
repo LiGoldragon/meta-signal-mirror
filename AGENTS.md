@@ -5,7 +5,7 @@ Read `ARCHITECTURE.md` and `skills.md` before editing.
 - `ethos/signal.ethos` is the sole schema authority.
 - The source is a `Signal` root; request and reply seating is in the source itself.
 - Import shared identities from the exact `signal-mirror` and
-  `signal-standard` producers. Do not recreate them locally.
+  `signal` producers. Do not recreate them locally.
 - No runtime, actors, persistence, transport server, or retention enforcement
   belongs here.
 - Datom is the only text projection. Take the portable frame from `signal`.
