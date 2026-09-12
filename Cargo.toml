@@ -1,6 +1,6 @@
 [package]
 name = "meta-signal-mirror"
-version = "2.0.1"
+version = "3.0.0"
 edition = "2024"
 rust-version = "1.89"
 license = "MIT OR Apache-2.0"
@@ -22,7 +22,7 @@ datom = ["dep:datom-codec", "dep:protos", "signal-mirror/datom", "signal-standar
 datom-codec = { git = "https://github.com/LiGoldragon/datom-codec", rev = "627db67f2655efd9f786864009955005fd8ab2ad", optional = true }
 protos = { git = "https://github.com/LiGoldragon/protos", rev = "171b21f65337983ab624b7b906397a4f1f92c5a3", optional = true }
 rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
-signal-mirror = { git = "https://github.com/LiGoldragon/signal-mirror.git", rev = "e60b7667da68e69e13e7e8a52b596752d18aa11c", default-features = false }
+signal-mirror = { git = "https://github.com/LiGoldragon/signal-mirror.git", rev = "3b62334445a7af91c08191b8e180391bb9a1f4cb", default-features = false }
 signal-standard = { package = "signal", git = "https://github.com/LiGoldragon/signal-standard.git", rev = "8f9a0deb701cebbea518679548df4a795affc918", default-features = false }
 
 [build-dependencies]

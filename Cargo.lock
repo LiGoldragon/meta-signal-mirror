@@ -135,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "meta-signal-mirror"
-version = "2.0.1"
+version = "3.0.0"
 dependencies = [
  "datom-codec",
  "ethos-zero",
@@ -298,8 +298,8 @@ dependencies = [
 
 [[package]]
 name = "signal-mirror"
-version = "2.0.1"
-source = "git+https://github.com/LiGoldragon/signal-mirror.git?rev=e60b7667da68e69e13e7e8a52b596752d18aa11c#e60b7667da68e69e13e7e8a52b596752d18aa11c"
+version = "3.0.0"
+source = "git+https://github.com/LiGoldragon/signal-mirror.git?rev=3b62334445a7af91c08191b8e180391bb9a1f4cb#3b62334445a7af91c08191b8e180391bb9a1f4cb"
 dependencies = [
  "datom-codec",
  "ethos-zero",

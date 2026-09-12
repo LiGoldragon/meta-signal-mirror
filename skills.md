@@ -9,21 +9,20 @@ belongs to `signal-mirror`.
 
 ## Editing
 
-- Edit `ethos/interface.ethos`; no second schema language or emitter exists.
-- Preserve the role-free source. Request/reply roles are current-stage Signal
-  behavior.
+- Edit `ethos/signal.ethos`; no second schema language or emitter exists.
+- The source is a `Signal` root; request and reply seating is in the source
+  itself, not in behavior.
 - Reuse producer identities through exact imports. Never copy `StoreName`,
   `SocketPath`, or `NetworkEndpoint` locally.
-- Mint declaration seats explicitly. Never derive identity or canonical order
-  from a name, position, or source contents.
-- Regenerate with
-  `META_SIGNAL_MIRROR_UPDATE_INTERFACE_ARTIFACTS=1 cargo build` only when the
-  authority transaction intentionally changes.
-- Keep Dotos as the sole optional text projection.
+- Regenerate `src/generated/signal.rs` with `ethos-zero`; `build.rs` asserts the
+  checked-in projection against a fresh generation.
+- Update `examples/canonical.datom` whenever a root changes; `tests/canonical.rs`
+  will not compile until every root has a line.
+- Datom is the only text projection. Take the portable frame from `signal`;
+  never restate it here.
 
 ## Proof
 
 Run `cargo test --all-features --all-targets`, both default and all-feature
 Clippy with warnings denied, rustdoc with warnings denied, and
-`nix flake check --all-systems`. A final build without the update variable must
-prove the checked projection is fresh.
+`nix flake check`. The build itself proves the checked projection is fresh.

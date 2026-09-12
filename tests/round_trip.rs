@@ -1,42 +1,28 @@
-use meta_signal_mirror::{Query, RegistryListing, RegistryQuery, Response};
+use meta_signal_mirror::{
+    ByteViewable, Query, RegistryListing, RegistryQuery, Response, Restorable, Signal, Signalizable,
+};
 
 #[test]
-fn current_meta_query_and_response_round_trip_as_fresh_bytes() {
+fn query_restores_from_fresh_peer_bytes() {
     let query = Query::ObserveRegistry(RegistryQuery {});
-    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&query).expect("archive");
-    assert_eq!(
-        rkyv::from_bytes::<Query, rkyv::rancor::Error>(&bytes).expect("restore"),
-        query
-    );
+    let outgoing = query.signalize().expect("archive query");
+    assert!(!outgoing.bytes().is_empty());
+    let incoming = Signal::<Query>::from(outgoing.bytes().to_vec());
+    assert_eq!(incoming.restore().expect("restore query"), query);
+}
+
+#[test]
+fn response_restores_from_fresh_peer_bytes() {
     let response = Response::RegistryObserved(RegistryListing {
         registered_store_vector: vec![],
     });
-    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&response).expect("archive");
-    assert_eq!(
-        rkyv::from_bytes::<Response, rkyv::rancor::Error>(&bytes).expect("restore"),
-        response
-    );
+    let outgoing = response.signalize().expect("archive response");
+    let incoming = Signal::<Response>::from(outgoing.bytes().to_vec());
+    assert_eq!(incoming.restore().expect("restore response"), response);
 }
 
 #[test]
-fn malformed_archive_is_rejected() {
-    assert!(rkyv::from_bytes::<Query, rkyv::rancor::Error>(&[0, 1, 2]).is_err());
-}
-
-#[cfg(feature = "datom")]
-#[test]
-fn current_meta_query_round_trips_as_datom() {
-    use datom_codec::{Actualizing, Budget, Datomizable, Potential};
-    use protos::{Protosizable, ReaderBudget, Textualizable};
-    let value = Query::ObserveRegistry(RegistryQuery {});
-    let text = value.datomize(vec![]).protosize().textualize();
-    let restored = Potential::<Query>::from(text)
-        .actualize(&mut Budget {
-            remaining: 1024,
-            reader: ReaderBudget { remaining: 1024 },
-            depth: 0,
-            maximum_depth: 1024,
-        })
-        .expect("actualize");
-    assert_eq!(restored, value);
+fn malformed_peer_bytes_are_rejected() {
+    let incoming = Signal::<Query>::from(vec![0, 1, 2]);
+    assert!(Restorable::<Query>::restore(&incoming).is_err());
 }

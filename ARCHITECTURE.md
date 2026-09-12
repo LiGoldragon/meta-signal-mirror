@@ -58,14 +58,26 @@ mechanism that acts on it.
 
 | Path | Responsibility |
 |---|---|
-| `ethos/signal.ethos` | sole authored Interface authority |
-| `src/bootstrap_manifest.rs` | already-minted authority and declaration seats |
-| `build.rs` | verifies the checked-in Rust projection against the authored Ethos |
-| `src/generated/signal.rs` | checked encoded Rust projection |
-| `src/lib.rs` | Signal archive and byte-carrier behavior |
-| `examples/canonical.datom` | exact readable witnesses for every root variant, in current Datom text |
+| `ethos/signal.ethos` | sole authored schema authority |
+| `build.rs` | asserts the checked-in Rust projection against a fresh `ethos-zero` generation |
+| `src/generated/signal.rs` | checked Rust projection |
+| `src/lib.rs` | module roots and the re-exported portable frame |
+| `examples/canonical.datom` | every request and reply root as encoded Datom text |
+| `tests/canonical.rs` | actualizes every canonical line and renders it back |
 
-The build accepts the exact Cargo-published Ethos sources from `signal-mirror`
-and `signal-standard`, verifies them against the Rust constants compiled from
-those same revisions, then publishes this repository's `ethos/` directory for
-its consumers.
+The portable rkyv frame — `Signal`, `Signalizable`, `ByteViewable`,
+`Restorable` — comes from `signal` and is re-exported from `src/lib.rs`. This
+crate holds no frame of its own. Shared identities (`StoreName`, `SocketPath`,
+`NetworkEndpoint`) are imported from the pinned `signal-mirror` and `signal`
+revisions, never restated.
+
+## Verification
+
+`tests/canonical.rs` actualizes each line of `examples/canonical.datom` through
+the codec, renders the value back, and requires the rendering to reproduce the
+authored line exactly. Root coverage is asserted against exhaustive matches
+over `Query` and `Response`, so a root added to the Ethos source cannot compile
+until it is given a canonical line. `tests/round_trip.rs` carries a request and
+a reply across fresh peer bytes and proves malformed bytes are refused.
+`tests/dependency_boundary.rs` proves the default graph pulls no retired codec
+or generator.
