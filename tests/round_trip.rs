@@ -26,3 +26,14 @@ fn malformed_peer_bytes_are_rejected() {
     let incoming = Signal::<Query>::from(vec![0, 1, 2]);
     assert!(Restorable::<Query>::restore(&incoming).is_err());
 }
+
+#[test]
+fn memory_versioned_log_addressing_restores_from_peer_bytes() {
+    let addressing = meta_signal_mirror::ContentAddressing::MemoryVersionedLog;
+    let outgoing = addressing.signalize().expect("archive memory addressing");
+    let incoming = Signal::<meta_signal_mirror::ContentAddressing>::from(outgoing.bytes().to_vec());
+    assert_eq!(
+        incoming.restore().expect("restore memory addressing"),
+        addressing
+    );
+}

@@ -85,7 +85,7 @@ pub const DECLARATION_SEATS: &[DeclarationSeat] = &[
     DeclarationSeat::new(None, "ConfigurationReceipt", 10830, 0xd4d0bb41f3e2638d),
     DeclarationSeat::new(None, "ContentAddressing", 5980, 0xeff284e5d8bd6468),
     DeclarationSeat::new(Some(5980), "Opaque", 65149, 0x3922ce6004831334),
-    DeclarationSeat::new(Some(5980), "SemaVersionedLog", 53539, 0x4eea9578f1465cc0),
+    DeclarationSeat::new(Some(5980), "MemoryVersionedLog", 53539, 0x4eea9578f1465cc0),
     DeclarationSeat::new(None, "StoreRegistration", 35061, 0xe957ff0090826d28),
     DeclarationSeat::new(None, "RegistrationReceipt", 54009, 0x5d8e0f85e8390c7c),
     DeclarationSeat::new(None, "StoreRetirement", 36346, 0x0bf919b0b99cf349),
