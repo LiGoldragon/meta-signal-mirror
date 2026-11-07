@@ -7,14 +7,14 @@
 
 use datom_codec::{Actualizing, Budget, Datomizable, Potential};
 use meta_signal_mirror::{Query, Response};
-use protos::{Protosizable, ReaderBudget, Textualizable};
+use protos::{Compactable, Protosizable, ReaderBudget};
 
 const CANONICAL: &str = include_str!("../examples/canonical.datom");
 
 fn budget() -> Budget {
     Budget {
         remaining: 1 << 20,
-        reader: ReaderBudget { remaining: 1 << 20 },
+        reader: ReaderBudget::try_from(1 << 20).expect("bounded reader budget"),
         depth: 0,
         maximum_depth: 256,
     }
@@ -70,7 +70,7 @@ const RESPONSE_ROOTS: [&str; 6] = [
 
 macro_rules! render {
     ($value:expr) => {
-        $value.clone().datomize(vec![]).protosize().textualize()
+        $value.clone().datomize(vec![]).protosize().compact()
     };
 }
 
